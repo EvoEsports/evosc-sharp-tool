@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "evosc.dotnettool": {
+      "version": "1.0.0",
+      "commands": [
+        "evosc"
+      ]
+    }
+  }
+}

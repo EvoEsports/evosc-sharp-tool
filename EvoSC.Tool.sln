@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvoSC.Tool", "EvoSC.Tool\EvoSC.Tool.csproj", "{E2C46562-C996-415E-8F87-12161ECA3C2F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E2C46562-C996-415E-8F87-12161ECA3C2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2C46562-C996-415E-8F87-12161ECA3C2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2C46562-C996-415E-8F87-12161ECA3C2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2C46562-C996-415E-8F87-12161ECA3C2F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
