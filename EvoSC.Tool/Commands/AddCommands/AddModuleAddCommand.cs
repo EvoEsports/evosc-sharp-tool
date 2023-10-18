@@ -1,7 +1,9 @@
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using EvoSC.Tool.Interfaces;
 using EvoSC.Tool.Utils;
 using EvoSC.Tool.Interfaces.Commands.NewCommands;
+using EvoSC.Tool.Interfaces.Utils;
 using Microsoft.Build.Construction;
 using Spectre.Console;
 using Spectre.Console.Rendering;
@@ -53,10 +55,12 @@ public class AddModuleAddCommand : IAddCommand
                 case "Author":
                     moduleAuthor = await AskAuthorAsync(moduleAuthor);
                     break;
+                default:
+                    return 0;
             }
         }
 
-        var moduleProject = new ModuleProject(moduleName, moduleTitle, moduleDesc, moduleAuthor);
+        IModuleProject moduleProject = new ModuleProject(moduleName, moduleTitle, moduleDesc, moduleAuthor);
         
         var status = new Status(_console)
         {
@@ -71,10 +75,20 @@ public class AddModuleAddCommand : IAddCommand
         return 0;
     }
 
-    private Task<string> AskNameAsync(string? defaultValue=null) => _console.ShowInputPromptAsync<string>("Unique Name:", defaultValue);
-    private Task<string> AskTitleAsync(string? defaultValue=null) => _console.ShowInputPromptAsync<string>("Title:", defaultValue);
-    private Task<string> AskDescAsync(string? defaultValue=null) => _console.ShowInputPromptAsync<string>("Description:", defaultValue);
-    private Task<string> AskAuthorAsync(string? defaultValue=null) => _console.ShowInputPromptAsync<string>("Author:", defaultValue);
+    private Task<string> AskNameAsync(string? defaultValue = null) => _console.ShowInputPromptAsync<string>(
+        "Unique Name:",
+        defaultValue,
+        s => !string.IsNullOrEmpty(s.Trim()) && Regex.IsMatch(s, "[\\w]")
+    );
+    private Task<string> AskTitleAsync(string? defaultValue=null) => _console.ShowInputPromptAsync<string>("Title:", defaultValue,
+        s => !string.IsNullOrEmpty(s.Trim())
+    );
+    private Task<string> AskDescAsync(string? defaultValue=null) => _console.ShowInputPromptAsync<string>("Description:", defaultValue,
+        s => !string.IsNullOrEmpty(s.Trim())
+    );
+    private Task<string> AskAuthorAsync(string? defaultValue=null) => _console.ShowInputPromptAsync<string>("Author:", defaultValue,
+        s => !string.IsNullOrEmpty(s.Trim())
+    );
 
     private Task<bool> ConfirmInfoAsync(string name, string title, string desc, string author)
     {
@@ -95,9 +109,31 @@ public class AddModuleAddCommand : IAddCommand
             Border = new SquareBoxBorder(),
             Header = new PanelHeader("[bold]Module Info[/]"),
         };
+
+        var notes = new List<FormattableString>();
         
+        if (!name.EndsWith("Module", StringComparison.Ordinal))
+        {
+            notes.Add($"[yellow]Module name should end with [/][yellow bold]Module[/][yellow].[/]");
+        }
+
+        if (!char.IsUpper(name.First()))
+        {
+            notes.Add($"[yellow]Module name should be in PascalCase.[/]");
+        }
+
         _console.WriteLine();
         _console.Write(panel);
+        
+        if (notes.Count > 0)
+        {
+            _console.WriteLine();
+            foreach (var note in notes)
+            {
+                _console.MarkupLineInterpolated($"[bold]NOTE: [/]{note}");
+            }
+        }
+        
         return _console.ConfirmAsync("Is this correct?");
     }
 }

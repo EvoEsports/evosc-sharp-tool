@@ -1,4 +1,5 @@
 using Microsoft.Build.Construction;
+using Spectre.Console;
 
 namespace EvoSC.Tool.Interfaces.Utils;
 
@@ -9,5 +10,6 @@ public interface IModuleProject
     public string Description { get; }
     public string Author { get; }
     
-    public Task GenerateAsync(IEvoScSolution solution, bool isInternal);
+    public Task GenerateAsync(IEvoScSolution solution, bool isInternal, StatusContext? status);
+    public Task GenerateAsync(IEvoScSolution solution, bool isInternal) => GenerateAsync(solution, isInternal, null);
 }

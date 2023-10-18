@@ -25,12 +25,17 @@ public static class PromptUtils
         return prompt.ShowAsync(console, CancellationToken.None);
     }
 
-    public static Task<T> ShowInputPromptAsync<T>(this IAnsiConsole console, string prompt, T? defaultValue) where T : class
+    public static Task<T> ShowInputPromptAsync<T>(this IAnsiConsole console, string prompt, T? defaultValue, Func<T, bool>? validator) where T : class
     {
         var promptObj = new TextPrompt<T>(prompt)
         {
             PromptStyle = new Style(Color.HotPink),
         };
+
+        if (validator != null)
+        {
+            promptObj.Validate(validator);
+        }
 
         if (defaultValue != null)
         {
@@ -40,8 +45,8 @@ public static class PromptUtils
         return promptObj.ShowAsync(console, CancellationToken.None);
     }
 
-    public static Task<T> ShowInputPromptAsync<T>(this IAnsiConsole console, string prompt) where T : class =>
-        ShowInputPromptAsync<T>(console, prompt, null);
+    public static Task<T> ShowInputPromptAsync<T>(this IAnsiConsole console, string prompt, Func<T, bool>? validator) where T : class =>
+        ShowInputPromptAsync<T>(console, prompt, null, validator);
 
     public static Task<bool> ConfirmAsync(this IAnsiConsole console, string prompt) =>
         new ConfirmationPrompt(prompt).ShowAsync(console, CancellationToken.None);

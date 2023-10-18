@@ -16,10 +16,50 @@
       <PackageReference Include="Microsoft.Build" Version="17.7.2" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
       <PackageReference Include="Spectre.Console" Version="0.47.1-preview.0.26" />
+      <PackageReference Include="System.CodeDom" Version="7.0.0" />
       <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
       <PackageReference Include="System.CommandLine.NamingConventionBinder" Version="2.0.0-beta4.22272.1" />
       <PackageReference Include="System.CommandLine.Parser" Version="0.1.1" />
 
+    </ItemGroup>
+
+
+
+
+
+
+    <ItemGroup>
+      <None Update="Utils\Templates\MainModuleClassTemplate.tt">
+        <Generator>TextTemplatingFilePreprocessor</Generator>
+        <LastGenOutput>MainModuleClassTemplate.cs</LastGenOutput>
+      </None>
+      <None Update="Utils\Templates\LocalizationFileTemplate.tt">
+        <Generator>TextTemplatingFilePreprocessor</Generator>
+        <LastGenOutput>LocalizationFileTemplate.cs</LastGenOutput>
+      </None>
+      <None Update="Utils\Templates\InfoFileTemplate.tt">
+        <Generator>TextTemplatingFilePreprocessor</Generator>
+        <LastGenOutput>InfoFileTemplate.cs</LastGenOutput>
+      </None>
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Compile Update="Utils\Templates\MainModuleClassTemplate.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MainModuleClassTemplate.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Utils\Templates\LocalizationFileTemplate.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>LocalizationFileTemplate.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Utils\Templates\InfoFileTemplate.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>InfoFileTemplate.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

@@ -1,0 +1,9 @@
+<#@ template language="C#" #>
+using EvoSC.Modules.Attributes;
+
+namespace EvoSC.Modules.<#=(IsInternal ? "Official" : Author)#>.<#=ModuleName#>;
+
+[Module<#=(IsInternal ? "(IsInternal = true)" : "") #>]
+public class <#=ModuleName #> : EvoScModule
+{
+}

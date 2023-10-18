@@ -1,8 +1,11 @@
+using System.Data.SqlTypes;
 using System.Text;
 using EvoSC.Tool.Interfaces;
 using EvoSC.Tool.Interfaces.Utils;
+using EvoSC.Tool.Utils.Templates;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
+using Spectre.Console;
 
 namespace EvoSC.Tool.Utils;
 
@@ -21,14 +24,40 @@ public class ModuleProject : IModuleProject
         Author = author;
     }
     
-    public async Task GenerateAsync(IEvoScSolution solution, bool isInternal)
+    public async Task GenerateAsync(IEvoScSolution solution, bool isInternal, StatusContext? status)
     {
-        var projectGuid = Guid.NewGuid();
+        status?.Status("Generating project file");
         var project = await GenerateProjectFileAsync(solution, isInternal);
-        await AddProjectToSolutionAsync(solution, project, isInternal);
+
+        status?.Status("Adding project to solution");
+        await AddProjectToSolutionAsync(solution, project.Project, isInternal);
+
+        status?.Status("Creating templates directory");
+        Directory.CreateDirectory(Path.Combine(project.ProjectDir, "Templates"));
+
+        status?.Status("Creating main module class file");
+        await File.WriteAllTextAsync(Path.Combine(project.ProjectDir, $"{Name}.cs"), new MainModuleClassTemplate
+        {
+            Author = Author,
+            ModuleName = Name,
+            IsInternal = isInternal
+        }.TransformText());
+
+        status?.Status("Creating localization file");
+        await File.WriteAllTextAsync(Path.Combine(project.ProjectDir, "Localization.resx"),
+            new LocalizationFileTemplate().TransformText());
+
+        status?.Status("Creating info.toml file");
+        await File.WriteAllTextAsync(Path.Combine(project.ProjectDir, "info.toml"), new InfoFileTemplate
+        {
+            Name = Name,
+            Title = Title,
+            Description = Description,
+            Author = Author
+        }.TransformText());
     }
 
-    private async Task<ProjectRootElement> GenerateProjectFileAsync(IEvoScSolution solution, bool isInternal)
+    private async Task<(ProjectRootElement Project, string ProjectDir)> GenerateProjectFileAsync(IEvoScSolution solution, bool isInternal)
     {
         var projectDir = Path.Combine(
             Path.GetDirectoryName(solution.SolutionFilePath) ?? throw new InvalidOperationException("Invalid solution path."),
@@ -75,7 +104,7 @@ public class ModuleProject : IModuleProject
 
         Directory.CreateDirectory(projectDir);
         project.Save(projectFile);
-        return project;
+        return (project, projectDir);
     }
 
     private async Task AddProjectToSolutionAsync(IEvoScSolution solution, ProjectRootElement project, bool isInternal)
