@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using EvoSC.Tool.Interfaces;
 using EvoSC.Tool.Utils;
 using EvoSC.Tool.Interfaces.Commands.NewCommands;
 using Microsoft.Build.Construction;
@@ -8,11 +10,11 @@ namespace EvoSC.Tool.Commands.AddCommands;
 
 public class AddModuleAddCommand : IAddCommand
 {
-    private readonly SolutionFile _solution;
+    private readonly IEvoScSolution _solution;
     private readonly IAnsiConsole _console;
-    public AddModuleAddCommand(SolutionFile solution, IAnsiConsole console)
-    
+    public AddModuleAddCommand(IEvoScSolution solution, IAnsiConsole console)
     {
+    
         _solution = solution;
         _console = console;
     }
@@ -26,6 +28,7 @@ public class AddModuleAddCommand : IAddCommand
             return 0;
         }
 
+        var isInternal = moduleType.Equals("Internal", StringComparison.Ordinal);
         var moduleName = await AskNameAsync();
         var moduleTitle = await AskTitleAsync();
         var moduleDesc = await AskDescAsync();
@@ -53,14 +56,16 @@ public class AddModuleAddCommand : IAddCommand
             }
         }
 
+        var moduleProject = new ModuleProject(moduleName, moduleTitle, moduleDesc, moduleAuthor);
+        
         var status = new Status(_console)
         {
             SpinnerStyle = new Style(Color.HotPink)
         };
 
-        await status.StartAsync("Creating project ...", async context =>
+        await status.StartAsync("Generating project", async context =>
         {
-            await Task.Delay(1000);
+            await moduleProject.GenerateAsync(_solution, isInternal);
         });
         
         return 0;

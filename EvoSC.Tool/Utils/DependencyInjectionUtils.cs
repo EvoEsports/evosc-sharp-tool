@@ -1,4 +1,5 @@
 using System.CommandLine.Builder;
+using EvoSC.Tool.Interfaces;
 using Microsoft.Build.Construction;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +15,7 @@ public static class DependencyInjectionUtils
             servicesAction(services);
 
             services.AddSingleton(context.Console);
-            services.AddSingleton(context.BindingContext.GetService<SolutionFile>());
+            services.AddSingleton(context.BindingContext.GetService<IEvoScSolution>());
 
             await using var serviceProvider = services.BuildServiceProvider();
 

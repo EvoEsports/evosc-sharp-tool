@@ -1,4 +1,6 @@
 using System.CommandLine.Builder;
+using EvoSC.Tool.Interfaces;
+using EvoSC.Tool.Utils;
 using Microsoft.Build.Construction;
 
 namespace EvoSC.Tool.Middlewares;
@@ -16,12 +18,12 @@ public static class EvoSCProjectCheckUtils
                 return Task.CompletedTask;
             }
             
-            context.BindingContext.AddService(typeof(SolutionFile), _ => solution);
+            context.BindingContext.AddService<IEvoScSolution>(_ => solution);
             
             return next(context);
         });
 
-    private static SolutionFile? FindSolutionFile(string currentPath)
+    private static IEvoScSolution? FindSolutionFile(string currentPath)
     {
         foreach (var file in Directory.GetFiles(currentPath))
         {
@@ -36,7 +38,11 @@ public static class EvoSCProjectCheckUtils
             {
                 if (project.ProjectName.Equals("EvoSC", StringComparison.Ordinal))
                 {
-                    return solution;
+                    return new EvoScSolution
+                    {
+                        SolutionFile = solution,
+                        SolutionFilePath = Path.GetFullPath(file)
+                    };
                 }
             }
         }
