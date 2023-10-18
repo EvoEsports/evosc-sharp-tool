@@ -1,10 +1,12 @@
 using System.Data.SqlTypes;
 using System.Text;
+using System.Xml;
 using EvoSC.Tool.Interfaces;
 using EvoSC.Tool.Interfaces.Utils;
 using EvoSC.Tool.Utils.Templates;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
+using Microsoft.Build.ObjectModelRemoting;
 using Spectre.Console;
 
 namespace EvoSC.Tool.Utils;
@@ -30,7 +32,7 @@ public class ModuleProject : IModuleProject
         var project = await GenerateProjectFileAsync(solution, isInternal);
 
         status?.Status("Adding project to solution");
-        await AddProjectToSolutionAsync(solution, project.Project, isInternal);
+        await AddProjectToSolutionAsync(solution, project.ProjectFile, isInternal);
 
         status?.Status("Creating templates directory");
         Directory.CreateDirectory(Path.Combine(project.ProjectDir, "Templates"));
@@ -57,7 +59,7 @@ public class ModuleProject : IModuleProject
         }.TransformText());
     }
 
-    private async Task<(ProjectRootElement Project, string ProjectDir)> GenerateProjectFileAsync(IEvoScSolution solution, bool isInternal)
+    private async Task<(string ProjectDir, string ProjectFile)> GenerateProjectFileAsync(IEvoScSolution solution, bool isInternal)
     {
         var projectDir = Path.Combine(
             Path.GetDirectoryName(solution.SolutionFilePath) ?? throw new InvalidOperationException("Invalid solution path."),
@@ -65,9 +67,32 @@ public class ModuleProject : IModuleProject
             Name
         );
         var projectFile = Path.Combine(projectDir, $"{Name}.csproj");
+        var modulesProjectPath = solution.GetRelativePath(projectDir, ProjectDefaults.ModulesProjectPath);
+
+        var fileTemplate = new ProjectFileTemplate
+        {
+            ModuleName = Name,
+            ModuleAuthor = Author,
+            ModuleTitle = Title,
+            ModuleDescription = Description,
+            IsInternal = isInternal,
+            ModulesProjectRelativePath = modulesProjectPath
+        };
+
+        Directory.CreateDirectory(projectDir);
+        await File.WriteAllTextAsync(projectFile, fileTemplate.TransformText());
+
+        return (projectDir, projectFile);
+
+        /* var projectDir = Path.Combine(
+            Path.GetDirectoryName(solution.SolutionFilePath) ?? throw new InvalidOperationException("Invalid solution path."),
+            isInternal ? ProjectDefaults.InternalProjectPath : ProjectDefaults.ExternalProjectPath,
+            Name
+        );
+        var projectFile = Path.Combine(projectDir, $"{Name}.csproj");
 
         var project = ProjectRootElement.Create(NewProjectFileOptions.None);
-        
+
         project.Sdk = ProjectDefaults.Sdk;
 
         // main project properties
@@ -85,7 +110,7 @@ public class ModuleProject : IModuleProject
         // resources such as templates and locales
         project.AddItem(ProjectDefaults.PropertyEmbeddedResource, ProjectDefaults.EmbeddedResourceTemplates);
         project.AddItem(ProjectDefaults.PropertyEmbeddedResource, ProjectDefaults.EmbeddedResourceLocalization);
-        
+
         // EvoSC# project references
         var modulesProjectPath = solution.GetRelativePath(projectDir, ProjectDefaults.ModulesProjectPath);
         project.AddItem(ProjectDefaults.PropertyProjectReference, modulesProjectPath);
@@ -94,7 +119,7 @@ public class ModuleProject : IModuleProject
         {
             var sourceGenProjectPath = solution.GetRelativePath(projectDir, ProjectDefaults.ModuleSourceGenProjectPath);
             var sourceGenItem = project.AddItem(ProjectDefaults.PropertyProjectReference, sourceGenProjectPath);
-            
+
             sourceGenItem.AddMetadata(ProjectDefaults.PropertyOutputItemType, ProjectDefaults.OutputItemType)
                 .ExpressedAsAttribute = true;
             sourceGenItem.AddMetadata(ProjectDefaults.PropertyReferenceOutputAssembly,
@@ -104,12 +129,12 @@ public class ModuleProject : IModuleProject
 
         Directory.CreateDirectory(projectDir);
         project.Save(projectFile);
-        return (project, projectDir);
+        return (project, projectDir); */
     }
 
-    private async Task AddProjectToSolutionAsync(IEvoScSolution solution, ProjectRootElement project, bool isInternal)
+    private async Task AddProjectToSolutionAsync(IEvoScSolution solution, string projectFile, bool isInternal)
     {
-        var projectRelativePath = Path.GetRelativePath(Path.GetDirectoryName(solution.SolutionFilePath), project.FullPath);
+        var projectRelativePath = Path.GetRelativePath(Path.GetDirectoryName(solution.SolutionFilePath), projectFile);
         var projectGuid = Guid.NewGuid();
         
         var solutionContents = await File.ReadAllTextAsync(solution.SolutionFilePath);
@@ -119,12 +144,12 @@ public class ModuleProject : IModuleProject
             .ProjectsInOrder
             .Any(p => p.ProjectName.Equals(ProjectDefaults.ExternalModulesFolderName, StringComparison.Ordinal));
 
-        string? modified;
+        string? modified = null;
         
         // if external make sure the solution folder exists first
         if (!isInternal && !hasExternalModuleFolder)
         {
-            var extModulesDir = Path.Combine(Path.GetFileName(solution.SolutionFilePath),
+            var extModulesDir = Path.Combine(Path.GetDirectoryName(solution.SolutionFilePath),
                 ProjectDefaults.ExternalModulesFolderName);
 
             Directory.CreateDirectory(extModulesDir);
@@ -136,7 +161,7 @@ public class ModuleProject : IModuleProject
         }
 
         // Add the project to the solution
-        modified = solutionContents.Insert(GetEndOfProjectSection(solutionContents),
+        modified = (modified ?? solutionContents).Insert(GetEndOfProjectSection(modified ?? solutionContents),
             GenerateSolutionProjectSection(projectRelativePath, projectGuid));
 
         // Set the project configuration

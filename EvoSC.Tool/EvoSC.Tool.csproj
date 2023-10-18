@@ -41,6 +41,10 @@
         <Generator>TextTemplatingFilePreprocessor</Generator>
         <LastGenOutput>InfoFileTemplate.cs</LastGenOutput>
       </None>
+      <None Update="Utils\Templates\ProjectFileTemplate.tt">
+        <Generator>TextTemplatingFilePreprocessor</Generator>
+        <LastGenOutput>ProjectFileTemplate.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
 
@@ -59,6 +63,11 @@
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>InfoFileTemplate.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Utils\Templates\ProjectFileTemplate.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ProjectFileTemplate.tt</DependentUpon>
       </Compile>
     </ItemGroup>
 
