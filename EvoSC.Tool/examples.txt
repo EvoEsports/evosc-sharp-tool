@@ -1,4 +1,4 @@
 To pack it: dotnet pack
-Install: dotnet tool install --local EvoSC.DotnetTool --add-source ./nupkg
-Uninstall: dotnet tool uninstall --local EvoSC.DotnetTool
+Install: dotnet tool install --local EvoSC.Tool --add-source ./nupkg
+Uninstall: dotnet tool uninstall --local EvoSC.Tool
 
