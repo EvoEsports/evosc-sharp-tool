@@ -45,6 +45,10 @@
         <Generator>TextTemplatingFilePreprocessor</Generator>
         <LastGenOutput>ProjectFileTemplate.cs</LastGenOutput>
       </None>
+      <None Update="Utils\Templates\MigrationFileTemplate.tt">
+        <Generator>TextTemplatingFilePreprocessor</Generator>
+        <LastGenOutput>MigrationFileTemplate.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
 
@@ -68,6 +72,11 @@
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>ProjectFileTemplate.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Utils\Templates\MigrationFileTemplate.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MigrationFileTemplate.tt</DependentUpon>
       </Compile>
     </ItemGroup>
 

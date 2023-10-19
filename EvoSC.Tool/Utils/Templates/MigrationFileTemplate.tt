@@ -1,0 +1,17 @@
+<#@ template language="C#" #>
+using FluentMigrator;
+
+namespace <#=Namespace#>;
+
+[Tags("Production")]
+[Migration(<#=UnixTimeStamp#>)]
+public class <#=MigrationName#> : Migration
+{
+    public override void Up()
+    {
+    }
+
+    public override void Down()
+    {
+    }
+}

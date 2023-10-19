@@ -32,17 +32,17 @@ public class AddCommandHandler : ToolCommandHandler<AddCommandOptions>
     
     public override async Task<int> ExecuteAsync(AddCommandOptions options)
     {
-        var addSelection = await Console.ShowStringSelectionPromptAsync("What do you want to add?", "Module");
+        var addSelection = await Console.ShowStringSelectionPromptAsync("What do you want to add?",
+            "Module",
+            "Migration"
+        );
 
-        switch (addSelection)
+        return addSelection switch
         {
-            case "Module":
-                return await ExecuteAddAsync(typeof(AddModuleAddCommand), options);
-            default:
-                return 0;
-        }
-        
-        return 0;
+            "Module" => await ExecuteAddAsync(typeof(AddModuleAddCommand), options),
+            "Migration" => await ExecuteAddAsync(typeof(AddMigrationAddCommand), options),
+            _ => 0
+        };
     }
 
     private Task<int> ExecuteAddAsync(Type t, AddCommandOptions options, params object[] args)

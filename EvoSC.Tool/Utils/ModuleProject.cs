@@ -1,12 +1,7 @@
-using System.Data.SqlTypes;
 using System.Text;
-using System.Xml;
 using EvoSC.Tool.Interfaces;
 using EvoSC.Tool.Interfaces.Utils;
 using EvoSC.Tool.Utils.Templates;
-using Microsoft.Build.Construction;
-using Microsoft.Build.Evaluation;
-using Microsoft.Build.ObjectModelRemoting;
 using Spectre.Console;
 
 namespace EvoSC.Tool.Utils;
@@ -83,53 +78,6 @@ public class ModuleProject : IModuleProject
         await File.WriteAllTextAsync(projectFile, fileTemplate.TransformText());
 
         return (projectDir, projectFile);
-
-        /* var projectDir = Path.Combine(
-            Path.GetDirectoryName(solution.SolutionFilePath) ?? throw new InvalidOperationException("Invalid solution path."),
-            isInternal ? ProjectDefaults.InternalProjectPath : ProjectDefaults.ExternalProjectPath,
-            Name
-        );
-        var projectFile = Path.Combine(projectDir, $"{Name}.csproj");
-
-        var project = ProjectRootElement.Create(NewProjectFileOptions.None);
-
-        project.Sdk = ProjectDefaults.Sdk;
-
-        // main project properties
-        project.AddProperty(ProjectDefaults.PropertyTargetFramework, ProjectDefaults.TargetFramework);
-        project.AddProperty(ProjectDefaults.PropertyImplicitUsings, ProjectDefaults.ImplicitUsings);
-        project.AddProperty(ProjectDefaults.PropertyNullable, ProjectDefaults.Nullable);
-        project.AddProperty(ProjectDefaults.PropertyRootNamespace, $"EvoSC.Modules.{(isInternal ? "Official" : Author)}.{Name}");
-        project.AddProperty(ProjectDefaults.PropertyGenerateAssemblyInfo, ProjectDefaults.GenerateAssemblyInfo);
-        project.AddProperty(ProjectDefaults.PropertyAssemblyName, Name);
-        project.AddProperty(ProjectDefaults.PropertyTitle, Title);
-        project.AddProperty(ProjectDefaults.PropertyDescription, Description);
-        project.AddProperty(ProjectDefaults.PropertyVersion, ProjectDefaults.Version);
-        project.AddProperty(ProjectDefaults.PropertyAuthors, Author);
-
-        // resources such as templates and locales
-        project.AddItem(ProjectDefaults.PropertyEmbeddedResource, ProjectDefaults.EmbeddedResourceTemplates);
-        project.AddItem(ProjectDefaults.PropertyEmbeddedResource, ProjectDefaults.EmbeddedResourceLocalization);
-
-        // EvoSC# project references
-        var modulesProjectPath = solution.GetRelativePath(projectDir, ProjectDefaults.ModulesProjectPath);
-        project.AddItem(ProjectDefaults.PropertyProjectReference, modulesProjectPath);
-
-        if (isInternal)
-        {
-            var sourceGenProjectPath = solution.GetRelativePath(projectDir, ProjectDefaults.ModuleSourceGenProjectPath);
-            var sourceGenItem = project.AddItem(ProjectDefaults.PropertyProjectReference, sourceGenProjectPath);
-
-            sourceGenItem.AddMetadata(ProjectDefaults.PropertyOutputItemType, ProjectDefaults.OutputItemType)
-                .ExpressedAsAttribute = true;
-            sourceGenItem.AddMetadata(ProjectDefaults.PropertyReferenceOutputAssembly,
-                    ProjectDefaults.ReferenceOutputAssembly)
-                .ExpressedAsAttribute = true;
-        }
-
-        Directory.CreateDirectory(projectDir);
-        project.Save(projectFile);
-        return (project, projectDir); */
     }
 
     private async Task AddProjectToSolutionAsync(IEvoScSolution solution, string projectFile, bool isInternal)
