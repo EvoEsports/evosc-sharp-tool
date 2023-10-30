@@ -35,7 +35,7 @@ public class ProjectDefaults
     public const string EmbeddedResourceLocalization = "Localization.resx";
 
     public const string InternalProjectPath = "src/Modules/";
-    public const string ExternalProjectPath = "externalModules/";
+    public const string ExternalProjectPath = $"{ExternalModulesFolderName}/";
     
     public const string ModuleSourceGenProjectPath = "src/EvoSC.Modules.SourceGeneration/EvoSC.Modules.SourceGeneration.csproj";
     public const string ModulesProjectPath = "src/EvoSC.Modules/EvoSC.Modules.csproj";
