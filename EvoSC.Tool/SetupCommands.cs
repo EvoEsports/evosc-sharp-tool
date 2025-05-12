@@ -9,7 +9,8 @@ public static class SetupCommands
     {
         var root = new RootCommand
         {
-            new AddCommand()
+            new AddCommand(),
+            new PackCommand()
         };
 
         root.Description = "EvoSC# tool.";

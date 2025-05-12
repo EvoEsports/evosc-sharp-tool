@@ -1,3 +1,4 @@
+using System.CommandLine;
 using EvoSC.Tool.Commands.AddCommands;
 using EvoSC.Tool.Interfaces.Commands.NewCommands;
 using EvoSC.Tool.Interfaces.Utils;
@@ -18,7 +19,9 @@ public class AddCommand : ToolCommand<AddCommandOptions, AddCommandHandler>
 
 public class AddCommandOptions : IToolCommandOptions
 {
-    public bool External { get; set; }
+    public void AddOptions(Command command)
+    {
+    }
 }
 
 public class AddCommandHandler : ToolCommandHandler<AddCommandOptions>

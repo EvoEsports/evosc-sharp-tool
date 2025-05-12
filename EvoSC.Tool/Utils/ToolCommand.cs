@@ -1,5 +1,7 @@
 using System.CommandLine;
 using System.CommandLine.NamingConventionBinder;
+using System.Reflection;
+using EvoSC.Tool.Commands;
 using EvoSC.Tool.Interfaces.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console;
@@ -12,6 +14,9 @@ where THandler : class, IToolCommandHandler<TOptions>
 {
     protected ToolCommand(string name, string? description = null) : base(name, description)
     {
+        var optionsInstance = Activator.CreateInstance<TOptions>();
+        optionsInstance.AddOptions(this);
+        
         Handler = CommandHandler.Create<TOptions, IServiceProvider>((options, services) =>
         {
             var handlerInstance = ActivatorUtilities.CreateInstance<THandler>(services);

@@ -15,7 +15,7 @@ namespace EvoSC.Tool.Utils.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
+    #line 1 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class ProjectFileTemplate : ProjectFileTemplateBase
     {
@@ -25,79 +25,79 @@ namespace EvoSC.Tool.Utils.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net7.0</TargetFramework>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <Nullable>enable</Nullable>\n    <RootNamespace>EvoSC.Modules.");
+            this.Write("<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net8.0</TargetFramework>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <Nullable>enable</Nullable>\n    <RootNamespace>EvoSC.Modules.");
             
-            #line 7 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
+            #line 7 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture((IsInternal ? "Official" : ModuleAuthor)));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 7 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
+            #line 7 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ModuleName));
             
             #line default
             #line hidden
             this.Write("</RootNamespace>\n    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>\n    <AssemblyName>");
             
-            #line 9 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
+            #line 9 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ModuleName));
             
             #line default
             #line hidden
             this.Write("</AssemblyName>\n    <Title>");
             
-            #line 10 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
+            #line 10 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ModuleTitle));
             
             #line default
             #line hidden
             this.Write("</Title>\n    <Description>");
             
-            #line 11 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
+            #line 11 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ModuleDescription));
             
             #line default
             #line hidden
             this.Write("</Description>\n    <Version>1.0.0</Version>\n    <Authors>");
             
-            #line 13 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
+            #line 13 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ModuleAuthor));
             
             #line default
             #line hidden
             this.Write("</Authors>\n  </PropertyGroup>\n  <ItemGroup>\n    <EmbeddedResource Include=\"Templates\\**\\*\" />\n  </ItemGroup>\n  <ItemGroup>\n    <EmbeddedResource Update=\"Localization.resx\" />\n  </ItemGroup>\n  <ItemGroup>\n    ");
             
-            #line 22 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
+            #line 22 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
  if (IsInternal) { 
             
             #line default
             #line hidden
             this.Write("    <ProjectReference Include=\"../../EvoSC.Modules.SourceGeneration/EvoSC.Modules.SourceGeneration.csproj\" OutputItemType=\"Analyzer\" ReferenceOutputAssembly=\"false\" />\n    ");
             
-            #line 24 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
+            #line 24 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
  } 
             
             #line default
             #line hidden
             this.Write("    <ProjectReference Include=\"");
             
-            #line 25 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
+            #line 25 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ModulesProjectRelativePath));
             
             #line default
             #line hidden
-            this.Write("\" Private=\"true\" />\n  </ItemGroup>\n  \n  ");
+            this.Write("\" />\n  </ItemGroup>\n  \n  ");
             
-            #line 28 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
+            #line 28 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
  if (!IsInternal) { 
             
             #line default
             #line hidden
             this.Write("  <ItemGroup>\n    <None Update=\"info.toml\">\n      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>\n    </None>\n  </ItemGroup>\n  <Target Name=\"PostBuild\" AfterTargets=\"PostBuildEvent\">\n    <Exec Command=\"rm -rf $(SolutionDir)src/EvoSC/bin/Debug/net7.0/modules/$(ProjectName)&#xA;mkdir $(SolutionDir)src/EvoSC/bin/Debug/net7.0/modules/$(ProjectName)&#xA;cp -r $(OutDir)/* $(SolutionDir)src/EvoSC/bin/Debug/net7.0/modules/$(ProjectName)\" />\n  </Target>\n  ");
             
-            #line 37 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
+            #line 37 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/ProjectFileTemplate.tt"
  } 
             
             #line default

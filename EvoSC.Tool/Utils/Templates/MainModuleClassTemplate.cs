@@ -15,7 +15,7 @@ namespace EvoSC.Tool.Utils.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/MainModuleClassTemplate.tt"
+    #line 1 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/MainModuleClassTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class MainModuleClassTemplate : MainModuleClassTemplateBase
     {
@@ -27,33 +27,33 @@ namespace EvoSC.Tool.Utils.Templates
         {
             this.Write("using EvoSC.Modules.Attributes;\n\nnamespace EvoSC.Modules.");
             
-            #line 4 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/MainModuleClassTemplate.tt"
+            #line 4 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/MainModuleClassTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture((IsInternal ? "Official" : Author)));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 4 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/MainModuleClassTemplate.tt"
+            #line 4 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/MainModuleClassTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ModuleName));
             
             #line default
             #line hidden
             this.Write(";\n\n[Module");
             
-            #line 6 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/MainModuleClassTemplate.tt"
+            #line 6 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/MainModuleClassTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture((IsInternal ? "(IsInternal = true)" : "")));
             
             #line default
             #line hidden
             this.Write("]\npublic class ");
             
-            #line 7 "/home/snixtho/projects/dotnet/EvoSC.DotnetTool/EvoSC.Tool/Utils/Templates/MainModuleClassTemplate.tt"
+            #line 7 "/home/snixtho/projects/dotnet/evosc-sharp-tool/EvoSC.Tool/Utils/Templates/MainModuleClassTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ModuleName));
             
             #line default
             #line hidden
-            this.Write(" : EvoScModule\n{\n}\n");
+            this.Write(" : EvoScModule;\n");
             return this.GenerationEnvironment.ToString();
         }
     }

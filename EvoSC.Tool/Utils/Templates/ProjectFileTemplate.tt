@@ -22,7 +22,7 @@
     <# if (IsInternal) { #>
     <ProjectReference Include="../../EvoSC.Modules.SourceGeneration/EvoSC.Modules.SourceGeneration.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <# } #>
-    <ProjectReference Include="<#=ModulesProjectRelativePath #>" Private="true" />
+    <ProjectReference Include="<#=ModulesProjectRelativePath #>" />
   </ItemGroup>
   
   <# if (!IsInternal) { #>
